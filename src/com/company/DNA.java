@@ -11,7 +11,7 @@ public class DNA {
 
         // add random character to each index of array
         for (int i = 0; i < this.genes.length; i++)
-            this.genes[i] = (char) (new Random().nextInt(26) + 'a');
+            this.genes[i] = generateRandomChar();
     }
 
     /**
@@ -28,21 +28,36 @@ public class DNA {
         return score / this.genes.length;
     }
 
-    public void crossOver(DNA partner) {
-        // TODO: return a child with half of each parents genes
-//
-//        DNA child = new DNA(this.genes.length);
-//
-//        Random random = new Random();
-//
-//        int mid = random.nextInt(this.genes.length);
-//
-//
+    public DNA crossOver(DNA partner) {
+        DNA child = new DNA(this.genes.length);
 
+        Random random = new Random();
+        int midPoint = random.nextInt(this.genes.length);
+
+        String newGenes = "";
+
+        for (int i = 0; i < this.genes.length; i++)
+            if (i < midPoint) newGenes += this.genes[i];
+            else newGenes += partner.getGenes()[i];
+
+        child.setGenes(newGenes);
+
+        return child;
     }
 
     public void mutate(float mutationRate) {
-        // TODO: change one character randomly from array (1% chance)
+        Random random = new Random();
+
+        if (random.nextInt(11) > mutationRate * 10) return;
+
+        int index = random.nextInt(this.genes.length);
+        char character = generateRandomChar();
+
+        this.genes[index] = character;
+    }
+
+    private char generateRandomChar() {
+        return (char) (new Random().nextInt(26) + 'a');
     }
 
     public void setGenes(String genes) {
@@ -51,5 +66,9 @@ public class DNA {
 
     public String getPhrase() {
         return Arrays.toString(genes);
+    }
+
+    public char[] getGenes() {
+        return genes;
     }
 }

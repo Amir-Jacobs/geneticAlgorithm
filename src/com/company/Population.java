@@ -29,31 +29,59 @@ public class Population {
             this.population[i] = new DNA(target.length());
     }
 
+    /**
+     * This might be useless.
+     *
+     * Prints fitness of each member in the population
+     */
     public void calcFitness() {
-        // TODO: loop through each member of population and calculate their fitness
-
-        for (int i = 0; i < 10; i++)
-            System.out.println(String.format("Phrase: %s%nFitness: %f", this.population[i].getPhrase(), this.population[i].fitness(target)));
+        for (int i = 0; i < this.population.length; i++)
+            System.out.println(String.format("Phrase: %s%nFitness: %f%n", this.population[i].getPhrase(), this.population[i].fitness(target)));
     }
 
     public void naturalSelection() {
         matingPool.clear();
 
         // TODO: make pool of population based on fitness scores
+
+        DNA child = this.population[0].crossOver(this.population[1]);
+        child.mutate(this.mutationRate);
+
+        System.out.println("---");
+        System.out.println(this.population[0].getPhrase());
+        System.out.println(this.population[1].getPhrase());
+        System.out.println(child.getPhrase());
+        System.out.println();
     }
 
     public void generate() {
         // TODO: generate a new population by randomly selecting from the mating pool
     }
 
+    public boolean evaluate() {
+        for (int i = 0; i < this.population.length; i++)
+            if (this.population[i].fitness(this.target) == 1) this.finished = true;
+
+        return finished;
+    }
+
     public String getBestPhrase() {
-        // TODO: return best phrase based on fitness score
-        return "";
+        DNA best = this.population[0];
+
+        for (int i = 0; i < this.population.length; i++)
+            if (best.fitness(this.target) < this.population[i].fitness(this.target))
+                best = this.population[i];
+
+        return best.getPhrase();
     }
 
     public float getAverageFitness() {
-        // TODO: return average fitness of population
-        return 0;
+        float total = 0f;
+
+        for (int i = 0; i < this.population.length; i++)
+                total += this.population[i].fitness(this.target);
+
+        return total / this.population.length;
     }
 
     public String getPhrases(int amount) {
