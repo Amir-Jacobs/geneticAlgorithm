@@ -12,16 +12,21 @@ public class Population {
     private String target;
     private int generations;
     private boolean finished;
-    private int perfectScore;
 
+    /**
+     * Constructor.
+     *
+     * @param target final sentence
+     * @param mutationRate floating point representation of chance percentage
+     * @param populationMax amount of members in population
+     */
     public Population(String target, float mutationRate, int populationMax) {
         this.target = target;
         this.mutationRate = mutationRate;
         this.matingPool = new ArrayList<DNA>();
 
-        this.generations = 0;
+        this.generations = 1;
         this.finished = false;
-        this.perfectScore = 1;
 
         // Generate population
         this.population = new DNA[populationMax];
@@ -30,6 +35,9 @@ public class Population {
             this.population[i] = new DNA(target.length());
     }
 
+    /**
+     * Generates a mating pool based on fitness score of DNA
+     */
     public void naturalSelection() {
         matingPool.clear();
 
@@ -41,7 +49,12 @@ public class Population {
         }
     }
 
+    /**
+     * Generates a new population based on mating pool members.
+     */
     public void generate() {
+        this.generations++;
+
         Random random = new Random();
 
         for (int i = 0; i < this.population.length; i++) {
@@ -55,6 +68,11 @@ public class Population {
             member.mutate(this.mutationRate);
     }
 
+    /**
+     * Checks if the evolutions are over.
+     *
+     * @return whether or not it's finished
+     */
     public boolean evaluate() {
         for (int i = 0; i < this.population.length; i++)
             if (this.population[i].fitness(this.target) == 1) this.finished = true;
@@ -62,6 +80,11 @@ public class Population {
         return finished;
     }
 
+    /**
+     * Gets the best scored phrase from the population.
+     *
+     * @return best phrase
+     */
     public String getBestPhrase() {
         DNA best = this.population[0];
 
@@ -72,6 +95,11 @@ public class Population {
         return best.getPhrase();
     }
 
+    /**
+     * Calculates the average fitness of current population.
+     *
+     * @return average fitness
+     */
     public float getAverageFitness() {
         float total = 0f;
 
@@ -81,15 +109,9 @@ public class Population {
         return total / this.population.length;
     }
 
-    public String getPhrases(int amount) {
-        // TODO: return all phrases, with a maximum amount
-        return "";
-    }
-
-    public boolean isFinished() {
-        return finished;
-    }
-
+    /**
+     * Getter
+     */
     public int getGenerations() {
         return generations;
     }

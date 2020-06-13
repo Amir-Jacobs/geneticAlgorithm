@@ -1,11 +1,15 @@
 package com.company;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class DNA {
     private char[] genes;
 
+    /**
+     * Constructor
+     *
+     * @param length of the final sentence
+     */
     public DNA(int length) {
         this.genes = new char[length];
 
@@ -15,9 +19,10 @@ public class DNA {
     }
 
     /**
-     * Returns a floating point representation of fitness score.
+     * Calculates the fitness of the DNA.
      *
-     * 0.5 = 50% fit.
+     * @param target the final sentence
+     * @return a floating point representation of fitness percentage (0.5f = 50% fit).
      */
     public float fitness(String target) {
         float score = 0;
@@ -28,6 +33,13 @@ public class DNA {
         return score / this.genes.length;
     }
 
+
+    /**
+     * Crosses DNA with a partner, so that part of the DNA is mixed.
+     *
+     * @param partner other DNA
+     * @return a new child with genes of both parents
+     */
     public DNA crossOver(DNA partner) {
         DNA child = new DNA(this.genes.length);
 
@@ -45,6 +57,11 @@ public class DNA {
         return child;
     }
 
+    /**
+     * Mutates a character to a random char based on the provided mutation rate
+     *
+     * @param mutationRate floating point representation of a mutation percentage (0.5f = 50% chance)
+     */
     public void mutate(float mutationRate) {
         Random random = new Random();
 
@@ -61,20 +78,34 @@ public class DNA {
         this.genes[index] = character;
     }
 
+    /**
+     * Generates a random character from a-z + space
+     *
+     * @return random character
+     */
     private char generateRandomChar() {
-        String chars = "abcdefghijklmnopqrstuvwxyz ";
+        String chars = "abcdefghijklmnopqrstuvwxyz 0123456789";
         Random random = new Random();
         return chars.charAt(random.nextInt(chars.length()));
     }
 
+    /**
+     * Setter
+     */
     public void setGenes(String genes) {
         this.genes = genes.toCharArray();
     }
 
+    /**
+     * Getter
+     */
     public String getPhrase() {
         return String.copyValueOf(this.genes);
     }
 
+    /**
+     * Getter
+     */
     public char[] getGenes() {
         return this.genes;
     }
