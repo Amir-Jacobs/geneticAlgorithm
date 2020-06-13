@@ -31,6 +31,9 @@ public class Population {
 
     public void calcFitness() {
         // TODO: loop through each member of population and calculate their fitness
+
+        for (int i = 0; i < 10; i++)
+            System.out.println(String.format("Phrase: %s%nFitness: %f", this.population[i].getPhrase(), this.population[i].fitness(target)));
     }
 
     public void naturalSelection() {
