@@ -39,6 +39,8 @@ public class Population {
      * Generates a mating pool based on fitness score of DNA
      */
     public void naturalSelection() {
+        // TODO: change implementation, so that it's not needed to create huge array
+
         matingPool.clear();
 
         for (int i = 0; i < this.population.length; i++) {

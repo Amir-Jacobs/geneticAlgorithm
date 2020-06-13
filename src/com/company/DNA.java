@@ -25,6 +25,8 @@ public class DNA {
      * @return a floating point representation of fitness percentage (0.5f = 50% fit).
      */
     public float fitness(String target) {
+        // TODO: test this with larger targets, after huge Population array is gone
+
         float score = 0;
 
         for (int i = 0; i < this.genes.length; i++)
@@ -32,7 +34,6 @@ public class DNA {
 
         return score / this.genes.length;
     }
-
 
     /**
      * Crosses DNA with a partner, so that part of the DNA is mixed.
@@ -84,7 +85,9 @@ public class DNA {
      * @return random character
      */
     private char generateRandomChar() {
-        String chars = "abcdefghijklmnopqrstuvwxyz 0123456789";
+        // TODO: make this work with more characters
+
+        String chars = "abcdefghijklmnopqrstuvwxyz ";
         Random random = new Random();
         return chars.charAt(random.nextInt(chars.length()));
     }

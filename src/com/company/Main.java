@@ -2,11 +2,13 @@ package com.company;
 
 /**
  * Algorithm that uses "generations", "populations" and "dna" to guess the provided sentence.
+ *
+ * The target sentence accepts a-z and spaces.
  */
 public class Main {
 
     public static void main(String[] args) {
-        Population population = new Population("never gonna give you up", 0.01f, 500);
+        Population population = new Population("never gonna give you up", 0.01f, 1500);
 
         float average = 0f;
 
@@ -19,6 +21,8 @@ public class Main {
 
             population.generate();
         }
+
+        System.out.println(population.getBestPhrase());
 
         System.out.println(
                 String.format(
