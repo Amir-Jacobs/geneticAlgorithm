@@ -51,13 +51,20 @@ public class DNA {
         if (random.nextInt(11) > mutationRate * 10) return;
 
         int index = random.nextInt(this.genes.length);
+
         char character = generateRandomChar();
+
+        // replace character if it's the same
+        while (character == this.genes[index])
+            character = generateRandomChar();
 
         this.genes[index] = character;
     }
 
     private char generateRandomChar() {
-        return (char) (new Random().nextInt(26) + 'a');
+        String chars = "abcdefghijklmnopqrstuvwxyz ";
+        Random random = new Random();
+        return chars.charAt(random.nextInt(chars.length()));
     }
 
     public void setGenes(String genes) {
@@ -65,10 +72,10 @@ public class DNA {
     }
 
     public String getPhrase() {
-        return Arrays.toString(genes);
+        return String.copyValueOf(this.genes);
     }
 
     public char[] getGenes() {
-        return genes;
+        return this.genes;
     }
 }

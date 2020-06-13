@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Population {
     private float mutationRate;
@@ -29,33 +30,29 @@ public class Population {
             this.population[i] = new DNA(target.length());
     }
 
-    /**
-     * This might be useless.
-     *
-     * Prints fitness of each member in the population
-     */
-    public void calcFitness() {
-        for (int i = 0; i < this.population.length; i++)
-            System.out.println(String.format("Phrase: %s%nFitness: %f%n", this.population[i].getPhrase(), this.population[i].fitness(target)));
-    }
-
     public void naturalSelection() {
         matingPool.clear();
 
-        // TODO: make pool of population based on fitness scores
+        for (int i = 0; i < this.population.length; i++) {
+            DNA member = this.population[i];
 
-        DNA child = this.population[0].crossOver(this.population[1]);
-        child.mutate(this.mutationRate);
-
-        System.out.println("---");
-        System.out.println(this.population[0].getPhrase());
-        System.out.println(this.population[1].getPhrase());
-        System.out.println(child.getPhrase());
-        System.out.println();
+            for (int y = 0; y < (int) (member.fitness(this.target) * 100); y++)
+                this.matingPool.add(member);
+        }
     }
 
     public void generate() {
-        // TODO: generate a new population by randomly selecting from the mating pool
+        Random random = new Random();
+
+        for (int i = 0; i < this.population.length; i++) {
+
+            if (this.matingPool.size() < 2) break;
+
+            this.population[i] = this.matingPool.get(random.nextInt(this.matingPool.size())).crossOver(this.matingPool.get(random.nextInt(this.matingPool.size())));
+        }
+
+        for (DNA member : this.population)
+            member.mutate(this.mutationRate);
     }
 
     public boolean evaluate() {
