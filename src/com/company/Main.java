@@ -43,5 +43,8 @@ public class Main {
 
         System.out.println(avgGenerations);
         System.out.println(maxGenerations);
+
+        // 261 average
+        // 3117 max
     }
 }

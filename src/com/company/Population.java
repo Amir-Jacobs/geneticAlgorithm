@@ -33,15 +33,15 @@ public class Population {
     }
 
 
-    public DNA selectOne(float sum) {
+    public DNA selectOne(float sum, int from) {
         Random random = new Random();
         float randomDigit = 0f + random.nextFloat() * sum; // 0-sum (1f not inclusive)
 
-        for (DNA dna : this.population) {
-            randomDigit -= dna.fitness(this.target);
+        for (int i = 0; i < this.population.length; i++) {
+            randomDigit -= this.population[i].fitness(this.target);
 
             if (randomDigit < 0f)
-                return dna;
+                return this.population[i];
         }
 
         return this.population[this.population.length - 1];
@@ -58,9 +58,13 @@ public class Population {
         for (DNA member : this.population)
             sum += member.fitness(this.target);
 
+        int from = 0;
+
         for (int i = 0; i < this.population.length; i++) {
-            this.population[i] = selectOne(sum).crossOver(selectOne(sum));
+            this.population[i] = selectOne(sum, from).crossOver(selectOne(sum, from + 1));
             this.population[i].mutate(this.mutationRate);
+
+            from += 2;
         }
     }
 
