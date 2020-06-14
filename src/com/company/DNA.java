@@ -85,8 +85,6 @@ public class DNA {
      * @return random character
      */
     private char generateRandomChar() {
-        // TODO: make this work with more characters
-
         String chars = "abcdefghijklmnopqrstuvwxyz ";
         Random random = new Random();
         return chars.charAt(random.nextInt(chars.length()));

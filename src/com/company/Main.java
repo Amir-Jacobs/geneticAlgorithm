@@ -8,28 +8,40 @@ package com.company;
 public class Main {
 
     public static void main(String[] args) {
-        Population population = new Population("never gonna give you up", 0.01f, 1500);
 
-        float average = 0f;
+        int maxGenerations = 0;
+        int avgGenerations = 0;
 
-        while (!population.evaluate()) {
+        for (int i = 0; i < 3; i++) {
+            Population population = new Population("to be or not to be to be or not to be to be or not to be", 0.01f, 500);
+
+            float average = 0f;
+
+            while (!population.evaluate()) {
+                System.out.println(population.getBestPhrase());
+
+                average += population.getAverageFitness();
+
+                population.generate();
+            }
+
+            if (population.getGenerations() > maxGenerations) maxGenerations = population.getGenerations();
+            avgGenerations += population.getGenerations();
+
             System.out.println(population.getBestPhrase());
 
-            average += population.getAverageFitness();
-
-            population.naturalSelection();
-
-            population.generate();
+            System.out.println(
+                    String.format(
+                            "%n%nGenerations: %d%nAverage fitness: %f%nResult: %s%n",
+                            population.getGenerations(),
+                            average / population.getGenerations(),
+                            population.getBestPhrase()
+                    ));
         }
 
-        System.out.println(population.getBestPhrase());
+        avgGenerations = avgGenerations / 30;
 
-        System.out.println(
-                String.format(
-                        "%n%nGenerations: %d%nAverage fitness: %f%nResult: %s%n",
-                        population.getGenerations(),
-                        average / population.getGenerations(),
-                        population.getBestPhrase()
-                    ));
+        System.out.println(avgGenerations);
+        System.out.println(maxGenerations);
     }
 }

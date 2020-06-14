@@ -1,13 +1,11 @@
 package com.company;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Population {
     private float mutationRate;
 
     private DNA[] population;
-    private ArrayList<DNA> matingPool;
 
     private String target;
     private int generations;
@@ -23,7 +21,6 @@ public class Population {
     public Population(String target, float mutationRate, int populationMax) {
         this.target = target;
         this.mutationRate = mutationRate;
-        this.matingPool = new ArrayList<DNA>();
 
         this.generations = 1;
         this.finished = false;
@@ -35,20 +32,19 @@ public class Population {
             this.population[i] = new DNA(target.length());
     }
 
-    /**
-     * Generates a mating pool based on fitness score of DNA
-     */
-    public void naturalSelection() {
-        // TODO: change implementation, so that it's not needed to create huge array
 
-        matingPool.clear();
+    public DNA selectOne(float sum) {
+        Random random = new Random();
+        float randomDigit = 0f + random.nextFloat() * sum; // 0-sum (1f not inclusive)
 
-        for (int i = 0; i < this.population.length; i++) {
-            DNA member = this.population[i];
+        for (DNA dna : this.population) {
+            randomDigit -= dna.fitness(this.target);
 
-            for (int y = 0; y < (int) (member.fitness(this.target) * 100); y++)
-                this.matingPool.add(member);
+            if (randomDigit < 0f)
+                return dna;
         }
+
+        return this.population[this.population.length - 1];
     }
 
     /**
@@ -57,17 +53,15 @@ public class Population {
     public void generate() {
         this.generations++;
 
-        Random random = new Random();
-
-        for (int i = 0; i < this.population.length; i++) {
-
-            if (this.matingPool.size() < 2) break;
-
-            this.population[i] = this.matingPool.get(random.nextInt(this.matingPool.size())).crossOver(this.matingPool.get(random.nextInt(this.matingPool.size())));
-        }
+        float sum = 0;
 
         for (DNA member : this.population)
-            member.mutate(this.mutationRate);
+            sum += member.fitness(this.target);
+
+        for (int i = 0; i < this.population.length; i++) {
+            this.population[i] = selectOne(sum).crossOver(selectOne(sum));
+            this.population[i].mutate(this.mutationRate);
+        }
     }
 
     /**
